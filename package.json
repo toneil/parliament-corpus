@@ -1,0 +1,15 @@
+{
+  "name": "parliament-corpus",
+  "version": "1.0.0",
+  "description": "A speech corpus builder based on recodings from Swedish Parliament",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tobias Neil",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "request": "^2.72.0"
+  }
+}

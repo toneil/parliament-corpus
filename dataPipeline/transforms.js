@@ -1,0 +1,29 @@
+
+const filterUniques = (acc, curr) => {
+    if (!acc.includes(curr))
+        acc.push(curr);
+    return acc;
+};
+
+const getIntermediateVideoUrl = videoData => {
+    if (!videoData || !videoData['streams']) return null;
+    let intermediateUrl = null;
+    videoData['streams']['files'].forEach(stream => {
+        if (stream['mimetype'] === 'video/mp4') {
+            intermediateUrl = stream['url'];
+        }
+    });
+    return intermediateUrl;
+};
+
+const getVideoIdFromUrl = videoUrl => {
+    if (!videoUrl) return null;
+    const splitString = videoUrl.split('/');
+    return splitString[splitString.length-1].split('.')[0];
+};
+
+module.exports = {
+    getIntermediateVideoUrl: getIntermediateVideoUrl,
+    filterUniques: filterUniques,
+    getVideoIdFromUrl: getVideoIdFromUrl
+};
