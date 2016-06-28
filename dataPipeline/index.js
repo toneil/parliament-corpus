@@ -1,29 +1,29 @@
-const Promise = require('bluebird');
-const requests = require('./dataPipeline/requests');
-const transforms = require('./dataPipeline/transforms');
+const requests = require('./requests');
+const transforms = require('./transforms');
 
-
-const getVideoMetadata = personId => {
-    return requests.getSpeechData(personId
-    ).map(speech => new Promise(resolve  => {
-        requests.getDebateVideoData(speech.debateId).then(videoData => {
-            speech.videoData = videoData;
-            resolve(speech)
-        });
-    })).map(speech => {
-        speech.intermediaVideoUrl = transforms.getIntermediateVideoUrl(speech.videoData);
+const getVideoUrl = speech =>
+    requests.getDebateVideoData(speech.debateId
+    ).then(transforms.getIntermediateVideoUrl
+    ).then(requests.getVideoUrl
+    ).then(videoUrl => {
+        speech.videoUrl = videoUrl;
         return speech;
-    }).map(speech => new Promise(resolve => {
-        requests.getVideoUrl(speech.intermediaVideoUrl).then(videoUrl => {
-            speech.videoUrl = videoUrl;
-            resolve(speech)
-        });
-    })).map(speech => {
+    });
+
+const getVideoMetadata = personId =>
+    requests.getSpeechData(personId
+    ).map(getVideoUrl
+    ).map(speech => {
         speech.videoId = transforms.getVideoIdFromUrl(speech.videoUrl);
         return speech;
-    }).filter(speech => !!speech.videoId);
-};
-
+    }).filter(speech => !!speech.videoId
+    ).map(speech =>
+        requests.getDebateTimestamps(speech.debateId, speech.debateTurn).then(timestamp => {
+            speech.start = timestamp.start;
+            speech.duration = timestamp.duration;
+            return speech;
+        })
+    );
 
 
 module.exports = {
