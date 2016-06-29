@@ -24,7 +24,7 @@ const getSpeechData = personId =>
 
 const getDebateTimestamps = (debateId, debateTurn) =>
     new Promise(resolve => {
-        requestWrapper.getFromCache(debateId, responseObject => {
+        requestWrapper.getFromCache('timestamp', debateId, urls.documentList, responseObject => {
             const documentList = responseObject['dokumentlista']['dokument'];
             let debateDoc = null;
             if (responseObject['dokumentlista']['@traffar'] === '1')
@@ -45,7 +45,7 @@ const getDebateTimestamps = (debateId, debateTurn) =>
 const getDebateVideoData = debateId =>
     new Promise(resolve => {
         if (!debateId) return resolve(null);
-        requestWrapper.get(urls.debateMetadata(debateId), responseObject => {
+        requestWrapper.getFromCache('videoData', debateId, urls.debateMetadata, responseObject => {
             if (!responseObject) return resolve(null);
             const videoData = responseObject['videodata'][0];
             resolve(videoData);
@@ -55,13 +55,7 @@ const getDebateVideoData = debateId =>
 const getVideoUrl = intermediateVideoUrl =>
     new Promise(resolve => {
         if (!intermediateVideoUrl) return resolve(null);
-        const requestObject = {
-            url:intermediateVideoUrl,
-            headers: {
-                'user-agent': 'parliament-corpus.v1'
-            }
-        };
-        requestWrapper.get(requestObject, responseObject => {
+        requestWrapper.getFromCache('videoUrl', intermediateVideoUrl, urls.videoUrlRequest, responseObject => {
             if (!responseObject) return resolve(null);
             const url = responseObject.url;
             resolve(url);

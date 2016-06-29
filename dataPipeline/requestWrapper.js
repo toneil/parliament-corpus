@@ -5,15 +5,17 @@ const Promise = require('bluebird');
 
 const documentStore = {};
 
-const getFromCache = (documentId, callback) => {
-    if (!documentStore.hasOwnProperty(documentId)) {
-        documentStore[documentId] = new Promise(resolve => {
-            get(urls.documentList(documentId), responseObject => {
+const getFromCache = (namespace, documentId, urlFunction, callback) => {
+    if (!documentStore.hasOwnProperty(namespace))
+        documentStore[namespace] = {};
+    if (!documentStore[namespace].hasOwnProperty(documentId)) {
+        documentStore[namespace][documentId] = new Promise(resolve => {
+            get(urlFunction(documentId), responseObject => {
                 resolve(responseObject);
             });
         })
     }
-    documentStore[documentId].then(callback);
+    documentStore[namespace][documentId].then(callback);
 };
 
 const get = (req, callback) => {

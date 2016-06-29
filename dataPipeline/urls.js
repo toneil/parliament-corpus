@@ -5,5 +5,13 @@ module.exports = {
     debateMetadata: debateId =>
         `http://www.riksdagen.se/api/videostream/get/${debateId}`,
     documentList: documentId =>
-        `http://data.riksdagen.se/dokumentlista/?sok=${documentId}&doktyp=&rm=&from=&tom=&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=1&utformat=json&a=a#soktraff`
+        `http://data.riksdagen.se/dokumentlista/?sok=${documentId}&doktyp=&rm=&from=&tom=&ts=&bet=&tempbet=&nr=&org=&iid=&webbtv=&talare=&exakt=&planering=&sort=rel&sortorder=desc&rapport=1&utformat=json&a=a#soktraff`,
+    videoUrlRequest: url => {
+        return {
+            url: url,
+            headers: {
+                'user-agent': 'parliament-corpus.v1'
+            }
+        }
+    }
 };
