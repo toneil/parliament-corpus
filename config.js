@@ -1,6 +1,7 @@
 
 const config = {
-    tooManyRequestsTimeout: 5000
+    tooManyRequestsTimeout: 5000,
+    cacheRequests: false
 };
 
 module.exports = config;

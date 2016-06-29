@@ -6,6 +6,8 @@ const Promise = require('bluebird');
 const documentStore = {};
 
 const getFromCache = (namespace, documentId, urlFunction, callback) => {
+    if (!config.cacheRequests)
+        return get(urlFunction(documentId), callback);
     if (!documentStore.hasOwnProperty(namespace))
         documentStore[namespace] = {};
     if (!documentStore[namespace].hasOwnProperty(documentId)) {

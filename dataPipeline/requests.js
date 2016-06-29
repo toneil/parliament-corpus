@@ -25,6 +25,8 @@ const getSpeechData = personId =>
 const getDebateTimestamps = (debateId, debateTurn) =>
     new Promise(resolve => {
         requestWrapper.getFromCache('timestamp', debateId, urls.documentList, responseObject => {
+            if (!responseObject)
+                return resolve(null);
             const documentList = responseObject['dokumentlista']['dokument'];
             let debateDoc = null;
             if (responseObject['dokumentlista']['@traffar'] === '1')
