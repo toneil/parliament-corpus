@@ -18,8 +18,9 @@ module.exports = {
             d: optional(query.from),
             iid: optional(query.personId),
             parti: optional(query.party),
+            rm: optional(query.rm),
             utformat: 'json',
-            sz: '10000'
+            sz: '20000'
         };
         return {
             url: 'http://data.riksdagen.se/anforandelista/',
