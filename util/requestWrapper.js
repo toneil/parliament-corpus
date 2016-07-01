@@ -1,5 +1,5 @@
 const config = require('../config');
-const urls = require('./urls');
+const urls = require('./../metadata/urls');
 const request = require('request');
 const Promise = require('bluebird');
 
@@ -22,15 +22,20 @@ const getFromCache = (namespace, documentId, urlFunction, callback) => {
 
 const get = (req, callback) => {
     request(req, (err, res, body) => {
-        if (err || res.statusCode == 404) callback(null);
-        else if (res.statusCode !== 200) {
+        if (err && err.code === 'ECONNRESET') {
+            console.log(`Too many requests sent, waiting ${config.tooManyRequestsTimeout} seconds before trying again`);
             setTimeout(() => {
-                console.log(res.statusCode);
-                console.log(`Too many requests sent, waiting ${config.tooManyRequestsTimeout} seconds before trying again`);
-                //get(url, jsonCallback)
-                callback(null);
+                get(req, callback)
             }, config.tooManyRequestsTimeout)
-        } else {
+        }
+        else if (err || res.statusCode !== 200) {
+            if (!!res)
+                console.log("Request failed with code", res.statusCode);
+            if (!!err)
+                console.log("Request threw error", err.code);
+            callback(null);
+        }
+        else {
             callback(JSON.parse(body));
         }
     });

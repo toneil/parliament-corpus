@@ -1,7 +1,6 @@
+const optional = x => !!x ? x : '';
 
 module.exports = {
-    speechList: personId =>
-        `http://data.riksdagen.se/anforandelista/?rm=&anftyp=&d=&ts=&parti=&iid=${personId}&sz=10000&utformat=json`,
     debateMetadata: debateId =>
         `http://www.riksdagen.se/api/videostream/get/${debateId}`,
     documentList: documentId =>
@@ -13,5 +12,18 @@ module.exports = {
                 'user-agent': 'parliament-corpus.v1'
             }
         }
+    },
+    speechList: query => {
+        const queryParameters = {
+            d: optional(query.from),
+            iid: optional(query.personId),
+            parti: optional(query.party),
+            utformat: 'json',
+            sz: '10000'
+        };
+        return {
+            url: 'http://data.riksdagen.se/anforandelista/',
+            qs: queryParameters
+        };
     }
 };

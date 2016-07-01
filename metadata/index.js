@@ -1,5 +1,6 @@
 const requests = require('./requests');
 const transforms = require('./transforms');
+const filters = require('./filters');
 
 const getVideoUrl = speech =>
     requests.getDebateVideoData(speech.debateId
@@ -10,20 +11,26 @@ const getVideoUrl = speech =>
         return speech;
     });
 
-const getVideoMetadata = personId =>
-    requests.getSpeechData(personId
-    ).map(getVideoUrl
+const getVideoMetadata = queryParameters =>
+    requests.getSpeechData(queryParameters
+    ).filter(filters.notAfter(queryParameters.to)
+    ).then(speeches => {
+        console.log('Number of speeches', speeches.length);
+        return speeches;
+    }).map(getVideoUrl
     ).map(speech => {
         speech.videoId = transforms.getVideoIdFromUrl(speech.videoUrl);
         return speech;
-    }).filter(speech => !!speech.videoId
-    ).map(speech =>
-        requests.getDebateTimestamps(speech.debateId, speech.debateTurn).then(timestamp => {
+    }).filter(filters.removeNull
+    ).map(speech => {
+        return requests.getDebateTimestamps(speech.debateId, speech.debateTurn).then(timestamp => {
+            if (!timestamp) return null;
             speech.start = timestamp.start;
             speech.duration = timestamp.duration;
             return speech;
         })
-    );
+
+    });
 
 
 module.exports = {

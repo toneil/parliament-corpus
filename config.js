@@ -1,7 +1,8 @@
 
 const config = {
-    tooManyRequestsTimeout: 5000,
-    cacheRequests: false
+    tooManyRequestsTimeout: 15000,
+    cacheRequests: true,
+    fileRoot: 'data/'
 };
 
 module.exports = config;

@@ -5,16 +5,18 @@ const requestWrapper = require('./requestWrapper');
 
 const getStartTime = (videoUrl) => videoUrl.split('=')[1];
 
-const getSpeechData = personId =>
+const getSpeechData = queryParameters =>
     new Promise((resolve, reject) => {
-        requestWrapper.get(urls.speechList(personId), responseObject => {
+        requestWrapper.get(urls.speechList(queryParameters), responseObject => {
             if (!responseObject) reject();
             const speeches = responseObject['anforandelista']['anforande'];
             const speechData = speeches.map(speech => {
                 return {
                     personId: speech['intressent_id'],
+                    party: speech['parti'],
                     debateId: speech['rel_dok_id'],
                     speechDataUrl: speech['anforande_url_xml'],
+                    date: speech['dok_datum'],
                     debateTurn: speech['anforande_nummer']
                 };
             });
@@ -33,6 +35,8 @@ const getDebateTimestamps = (debateId, debateTurn) =>
                 debateDoc = documentList;
             else
                 debateDoc = documentList.filter(doc => doc['dok_id'] === debateId)[0];
+            if (!Array.isArray(debateDoc['debatt']['anforande']))
+                debateDoc['debatt']['anforande'] = [debateDoc['debatt']['anforande']];
             debateDoc['debatt']['anforande'].forEach(speech => {
                 if (speech['anf_nummer'] === debateTurn)
                     resolve({
