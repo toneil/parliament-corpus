@@ -11,7 +11,7 @@ const getVideoUrl = speech =>
         return speech;
     });
 
-const getVideoMetadata = queryParameters =>
+const getSpeechMetadata = queryParameters =>
     requests.getSpeechData(queryParameters
     ).filter(filters.notAfter(queryParameters.to)
     ).then(speeches => {
@@ -30,9 +30,10 @@ const getVideoMetadata = queryParameters =>
             return speech;
         })
 
-    });
+    }).filter(filters.removeNull);
+
 
 
 module.exports = {
-    getVideoMetadata: getVideoMetadata
+    getSpeechMetadata: getSpeechMetadata
 };
