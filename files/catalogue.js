@@ -20,7 +20,7 @@ const createCatalogue = (speeches, cataloguePath, append) => {
     }, {});
     if (append) {
         const existingCat = jsonfile.readFileSync(cataloguePath);
-        existingCat.videoIds.forEach(videoId => {
+        Object.keys(existingCat).forEach(videoId => {
            if (!catalogue.hasOwnProperty(videoId)) {
                catalogue[videoId] = existingCat[videoId];
            } else {
