@@ -1,3 +1,5 @@
+const config = require('../config');
+
 const optional = x => !!x ? x : '';
 
 module.exports = {
@@ -15,12 +17,12 @@ module.exports = {
     },
     speechList: query => {
         const queryParameters = {
-            d: optional(query.from),
+            d: optional(query.from).substr(0,10),
             iid: optional(query.personId),
             parti: optional(query.party),
             rm: optional(query.rm),
             utformat: 'json',
-            sz: '20000'
+            sz: config.maxSpeechListSize
         };
         return {
             url: 'http://data.riksdagen.se/anforandelista/',
