@@ -4,11 +4,16 @@
   "description": "A speech corpus builder based on recodings from Swedish Parliament",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm link parliament-corpus"
   },
   "preferGlobal": "true",
   "bin": {
-    "build-cat": "bin/buildCatalogue.js"
+    "corpus-build-cat": "bin/buildCatalogue.js",
+    "corpus-download": "bin/downloadCatalogue.js"
+  },
+  "engines": {
+    "node": "6.2.1"
   },
   "author": "Tobias Neil",
   "license": "MIT",
