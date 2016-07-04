@@ -6,14 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "build-cat": "bin/buildCatalogue.js"
+  },
   "author": "Tobias Neil",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.4.1",
+    "clui": "^0.3.1",
+    "command-line-args": "^3.0.0",
     "ffmpeg": "0.0.4",
     "fluent-ffmpeg": "^2.1.0",
+    "jetty": "^0.2.1",
     "jsonfile": "^2.3.1",
     "mkdirp": "^0.5.1",
+    "remote-file-size": "^3.0.3",
     "request": "^2.72.0"
   }
 }
