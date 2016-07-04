@@ -34,7 +34,6 @@ $ corpus-download --cat-path path/to/catalogue -r path/to/download/data/root [op
 ### corpus-build-cat
 The Parliament servers are somewhat fragile, and the ammount of requests needed to get the metadata necessary for downloading the video files and transcripts can cause the servers to reject the user. It is therefore a good idea to construct a metadata catalogue before running the time consuming task of downloading the videos themselves, as this can be done in smaller increments, e.g. by restricting each metadata build task to a certain political party. 
 
-#### Arguments
 + `--help, -h` Prints help text.
 + `--cat-path, -c` Sets the metadata catalogue path. If `--append` is used, this needs to be an existing catalogue.
 + `--append, -a` Appends the result of the metadata query to an existing catalogue.
@@ -43,6 +42,9 @@ The Parliament servers are somewhat fragile, and the ammount of requests needed 
 + `--party` Only adds speeches made by parliamentarians belonging to a specific party. Parties are denoted by their standard letter codes, e.g `s` for Socialdemokraterna and `mp` for Miljöpartiet. The party formerly known as Folkpartiet is now denoted by `l` (Liberalerna).
 
 ### corpus-download
+Downloads videos and transcripts for all speeches listed in the input catalogue, and extracts audio files from these.
+The audio files are segmented so as to align with the transcripts.
+
 + `--help, -h` Prints help text.
 + `--cat-path, -c` Sets the metadata catalogue to be downloaded.
 + `--root, -r` Sets the root folder for all downloaded data.
