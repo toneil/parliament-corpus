@@ -14,10 +14,7 @@ const getVideoUrl = speech =>
 const getSpeechMetadata = queryParameters =>
     requests.getSpeechData(queryParameters
     ).filter(filters.notAfter(queryParameters.to)
-    ).then(speeches => {
-        console.log('Number of speeches', speeches.length);
-        return speeches;
-    }).map(getVideoUrl
+    ).map(getVideoUrl
     ).map(speech => {
         speech.videoId = transforms.getVideoIdFromUrl(speech.videoUrl);
         return speech;
@@ -31,8 +28,6 @@ const getSpeechMetadata = queryParameters =>
         })
 
     }).filter(filters.removeNull);
-
-
 
 module.exports = {
     getSpeechMetadata: getSpeechMetadata

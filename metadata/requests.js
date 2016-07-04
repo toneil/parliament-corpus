@@ -32,22 +32,18 @@ const getSittings = (from, to) => {
  * Calls are therefore deconstructed so as to target
  * individual sittings (years), with 15k items on average.
  */
-const deconstructSpeechRequests = queryParameters => {
+const getSpeechData = queryParameters => {
     const to = !!queryParameters.to ? queryParameters.to : Date.now();
     const from = !!queryParameters.from ? queryParameters.from : new Date(config.defaultStartDate);
-    console.log(from, to)
     const sittings = getSittings(from, to);
-    console.log("sittings", sittings);
     return Promise.map(sittings, sitting =>
         new Promise(resolve => {
             queryParameters['rm'] = sitting;
-            console.log('Querying', queryParameters);
             requestWrapper.get(urls.speechList(queryParameters), responseObject => {
-                if (!responseObject || !responseObject['anforandelista']['anforande'])
+                if (!responseObject || !responseObject['anforandelista']['anforande']) {
                     return resolve([]);
-
+                }
                 const speeches = responseObject['anforandelista']['anforande'];
-                console.log('got response', speeches.length);
                 const speechData = speeches.map(speech => {
                     return {
                         personId: speech['intressent_id'],
@@ -59,32 +55,11 @@ const deconstructSpeechRequests = queryParameters => {
                     };
                 });
                 resolve(speechData);
-            });
+            }, true);
         })
     ).reduce((speechList, sublist) => speechList.concat(sublist), []);
 
 };
-
-/*
- */
-const getSpeechData = queryParameters =>
-    new Promise((resolve, reject) => {
-        requestWrapper.get(urls.speechList(queryParameters), responseObject => {
-            if (!responseObject) reject();
-            const speeches = responseObject['anforandelista']['anforande'];
-            const speechData = speeches.map(speech => {
-                return {
-                    personId: speech['intressent_id'],
-                    party: speech['parti'],
-                    debateId: speech['rel_dok_id'],
-                    speechDataUrl: speech['anforande_url_xml'],
-                    date: speech['dok_datum'],
-                    debateTurn: speech['anforande_nummer']
-                };
-            });
-            resolve(speechData);
-        });
-    });
 
 /*
  * Returns a promise containing the start time and duration of {debateTurn} in the video for {debateId}
@@ -92,7 +67,7 @@ const getSpeechData = queryParameters =>
 const getDebateTimestamps = (debateId, debateTurn) =>
     new Promise(resolve => {
         requestWrapper.getFromCache('timestamp', debateId, urls.documentList, responseObject => {
-            if (!responseObject)
+            if (!responseObject || !responseObject['dokumentlista'] || !responseObject['dokumentlista']['dokument'])
                 return resolve(null);
             const documentList = responseObject['dokumentlista']['dokument'];
             let debateDoc = null;
@@ -100,6 +75,8 @@ const getDebateTimestamps = (debateId, debateTurn) =>
                 debateDoc = documentList;
             else
                 debateDoc = documentList.filter(doc => doc['dok_id'] === debateId)[0];
+            if (!debateDoc || !debateDoc['debatt'] || !debateDoc['debatt']['anforande'])
+                return resolve(null);
             if (!Array.isArray(debateDoc['debatt']['anforande']))
                 debateDoc['debatt']['anforande'] = [debateDoc['debatt']['anforande']];
             debateDoc['debatt']['anforande'].forEach(speech => {
@@ -140,7 +117,7 @@ const getVideoUrl = intermediateVideoUrl =>
 
 
 module.exports = {
-    getSpeechData: deconstructSpeechRequests,
+    getSpeechData: getSpeechData,
     getDebateVideoData: getDebateVideoData,
     getDebateTimestamps: getDebateTimestamps,
     getVideoUrl: getVideoUrl
