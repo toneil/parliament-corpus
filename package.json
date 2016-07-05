@@ -1,6 +1,6 @@
 {
   "name": "parliament-corpus",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "A speech corpus builder based on recodings from Swedish Parliament",
   "main": "index.js",
   "scripts": {
