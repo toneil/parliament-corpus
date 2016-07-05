@@ -71,7 +71,6 @@ const sections = [
 const options = commandLineArgs(optionDefinitions);
 
 if (!options['cat-path'] || !!options.help) {
-    console.log(options.append);
     console.log(getUsage(sections));
     process.exit(1);
 }
