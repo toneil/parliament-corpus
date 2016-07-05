@@ -1,10 +1,3 @@
-
-const filterUniques = (acc, curr) => {
-    if (!acc.includes(curr))
-        acc.push(curr);
-    return acc;
-};
-
 /*
  * Given some recording metadata, returns an intermediate URL where
  * the proper recording URL can be found.
@@ -28,6 +21,5 @@ const getVideoIdFromUrl = videoUrl => {
 
 module.exports = {
     getIntermediateVideoUrl: getIntermediateVideoUrl,
-    filterUniques: filterUniques,
     getVideoIdFromUrl: getVideoIdFromUrl
 };
