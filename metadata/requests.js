@@ -5,21 +5,21 @@ const requestWrapper = require('../util/requestWrapper');
 
 const getStartTime = (videoUrl) => videoUrl.split('=')[1];
 
-const yearToSitting = year => year.toString() + '/' + incrementYear(year).toString().substr(2,2);
+const getYear = date => parseInt(date.substr(0,4));
 
-const incrementYear = year => new Date((parseInt(year.toString()) + 1).toString()).getFullYear();
+const yearToSitting = year => year.toString() + '/' + (year + 1).toString().substr(2,2);
 
 /*
  * Returns a list of sittings on the form (2014/15) for all sittings
  * in the period between {from} and {to}
  */
 const getSittings = (from, to) => {
-    const lastYear = new Date(to).getFullYear();
+    const lastYear = getYear(to);
     const sittings = [];
-    let year = new Date(from).getFullYear() - 1;
+    let year = getYear(from) - 1;
     while (lastYear >= year) {
         sittings.push(yearToSitting(year));
-        year = incrementYear(year);
+        year += 1;
     }
     return sittings;
 };
