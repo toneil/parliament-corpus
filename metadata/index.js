@@ -2,13 +2,13 @@ const requests = require('./requests');
 const transforms = require('./transforms');
 const filters = require('./filters');
 
-const getVideoUrl = speech =>
-    requests.getDebateVideoData(speech.debateId
 /*
  * Most debates from 2005 and onwards are recorded.
  *
  * Given a debate ID, returns a promise containing a URL to its recording.
  */
+const getVideoUrl = debateId =>
+    requests.getDebateVideoData(debateId
     ).then(transforms.getIntermediateVideoUrl
     ).then(requests.getVideoUrl
     ).then(videoUrl => {
@@ -31,7 +31,7 @@ const getVideoUrl = speech =>
 const getSpeechMetadata = queryParameters =>
     requests.getSpeechList(queryParameters
     ).filter(filters.notAfter(queryParameters.to)
-    ).map(getVideoUrl
+    ).map(speech => getVideoUrl(speech.debateId)
     ).map(speech => {
         speech.videoId = transforms.getVideoIdFromUrl(speech.videoUrl);
         return speech;
