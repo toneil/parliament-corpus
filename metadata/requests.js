@@ -35,7 +35,7 @@ const getSittings = (from, to) => {
  * Calls are therefore deconstructed so as to target
  * individual sittings (years), with 15k items on average.
  */
-const getSpeechData = queryParameters => {
+const getSpeechList = queryParameters => {
     const to = !!queryParameters.to ? queryParameters.to : Date.now();
     const from = !!queryParameters.from ? queryParameters.from : new Date(config.defaultStartDate);
     const sittings = getSittings(from, to);
@@ -123,7 +123,7 @@ const getVideoUrl = intermediateVideoUrl =>
 
 
 module.exports = {
-    getSpeechData: getSpeechData,
+    getSpeechList: getSpeechList,
     getDebateVideoData: getDebateVideoData,
     getDebateTimestamps: getDebateTimestamps,
     getVideoUrl: getVideoUrl

@@ -29,7 +29,7 @@ const getVideoUrl = speech =>
  * videoUrl         - A URL to the recording of the debate to which the speech belongs
  */
 const getSpeechMetadata = queryParameters =>
-    requests.getSpeechData(queryParameters
+    requests.getSpeechList(queryParameters
     ).filter(filters.notAfter(queryParameters.to)
     ).map(getVideoUrl
     ).map(speech => {
