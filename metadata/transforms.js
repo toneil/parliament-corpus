@@ -5,6 +5,10 @@ const filterUniques = (acc, curr) => {
     return acc;
 };
 
+/*
+ * Given some recording metadata, returns an intermediate URL where
+ * the proper recording URL can be found.
+ */
 const getIntermediateVideoUrl = videoData => {
     if (!videoData || !videoData['streams']) return null;
     let intermediateUrl = null;

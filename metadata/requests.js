@@ -7,6 +7,9 @@ const getStartTime = (videoUrl) => videoUrl.split('=')[1];
 
 const getYear = date => parseInt(date.substr(0,4));
 
+/*
+ * E.g. 2014 => 2014/15
+ */
 const yearToSitting = year => year.toString() + '/' + (year + 1).toString().substr(2,2);
 
 /*
@@ -90,6 +93,10 @@ const getDebateTimestamps = (debateId, debateTurn) =>
         });
     });
 
+/*
+ * Returns a promise containing various metadata for the recording
+ * of the debate identified by {debateId}
+ */
 const getDebateVideoData = debateId =>
     new Promise(resolve => {
         if (!debateId) return resolve(null);
@@ -104,7 +111,6 @@ const getDebateVideoData = debateId =>
  * The URL of a given debate video is specified in a document reached by {intermediateVideoUrl}
  * Returns a promise containing said video URL
  */
-
 const getVideoUrl = intermediateVideoUrl =>
     new Promise(resolve => {
         if (!intermediateVideoUrl) return resolve(null);

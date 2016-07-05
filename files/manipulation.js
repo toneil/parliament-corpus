@@ -8,6 +8,11 @@ const stripHtmlTags = string => string.replace(/(<\w+>)/g, '').replace(/(<\/\w+>
 const stripStyleRef = string => string.replace(/(STYLEREF.*MERGEFORMAT)/g, '');
 const stripIntro = string => string.replace(/([^\s+[A-Z][a-z]+])/,'');
 
+/*
+ * Writes each [transcript.text] in {transcripts} to
+ * {rootDir}/{debateId}/[transcript.debateTurn].txt, after
+ * stripping the content for metadata tags.
+ */
 const splitTranscripts = (videoID, transcripts, rootDir) => {
     new Promise(resolve => {
          const videoDir = rootDir + videoID +'/';
@@ -22,12 +27,20 @@ const splitTranscripts = (videoID, transcripts, rootDir) => {
     });
 };
 
+/*
+ * Removes the file found at {filePath} iff {discardRaws} is true
+ */
 const discardRaws = (filePath, discardRaws) => {
     if (discardRaws)
         fs.unlink(filePath);
     return true;
 };
 
+/*
+ * Extracts the audio track from the video found at {videoPath}, and splits it
+ * in segments as specified in [speech.start] and [speech.duration] fields for each [speech] in
+ * {speeches}. The resulting sound data will be stored in {rootDir}/{debateId}/[speech.debateTurn].mp3
+ */
 const extractAndSplitAudio = (videoPath, videoId, speeches, rootDir) => {
     const audioRoot = rootDir + videoId + '/';
     console.log("Extracting mp3 from", videoPath);

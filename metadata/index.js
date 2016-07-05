@@ -4,6 +4,11 @@ const filters = require('./filters');
 
 const getVideoUrl = speech =>
     requests.getDebateVideoData(speech.debateId
+/*
+ * Most debates from 2005 and onwards are recorded.
+ *
+ * Given a debate ID, returns a promise containing a URL to its recording.
+ */
     ).then(transforms.getIntermediateVideoUrl
     ).then(requests.getVideoUrl
     ).then(videoUrl => {
@@ -11,6 +16,18 @@ const getVideoUrl = speech =>
         return speech;
     });
 
+/*
+ * Given a set of query parameters, returns a promise containing
+ * a list of all matching speech items. A speech item has the following properties
+ *
+ * personId         - Unique ID of the speaker
+ * party            - Political party of the speaker
+ * debateId         - Unique ID of the debate to which the speech belongs
+ * debateTurn       - Identifies the speech within the context of a debate
+ * speechDataUrl    - A URL to an XML file containing the speech transcript
+ * date             - The date of the speech
+ * videoUrl         - A URL to the recording of the debate to which the speech belongs
+ */
 const getSpeechMetadata = queryParameters =>
     requests.getSpeechData(queryParameters
     ).filter(filters.notAfter(queryParameters.to)

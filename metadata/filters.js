@@ -1,4 +1,8 @@
 
+/*
+ * Returns a function that will return true iff {speech} was held before {upToOptional}
+ * {upToOptional} may be null.
+ */
 const notAfter = upToOptional =>
     speech => {
         const upTo = !!upToOptional ? new Date(upToOptional) : new Date();

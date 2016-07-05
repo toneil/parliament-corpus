@@ -1,6 +1,10 @@
 var jsonfile = require('jsonfile');
 
-
+/*
+ * Creates a dictionary mapping debate IDs to speech items in {speeches}
+ * and writes it to a file. If {append} is set to true, any previous contents of the output file
+ * will be retained.
+ */
 const createCatalogue = (speeches, cataloguePath, append) => {
     const catalogue = speeches.reduce((cat, speech) => {
         if (!cat.hasOwnProperty(speech.videoId))

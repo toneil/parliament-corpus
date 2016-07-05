@@ -5,11 +5,15 @@ const Promise = require('bluebird');
 const remote = require('remote-file-size');
 const Progress = require('clui').Progress;
 
-
 const requestWrapper = require('../util/requestWrapper');
 const config = require('../config');
 const manipulation = require('./manipulation');
 
+
+/*
+ * Auxiliary function for downloading videos. Handles the download itself, and prints
+ * download info.
+ */
 const downloadVideoAux = (url, destination, remoteSize, resolve, reject) => {
     const downloadProgress = new Progress(20);
     let sizeThusFar = 0;
@@ -27,6 +31,10 @@ const downloadVideoAux = (url, destination, remoteSize, resolve, reject) => {
         }).pipe(fs.createWriteStream(destination));
 };
 
+/*
+ * Downloads the video data found at {url} and saves it to {destination},
+ * unless that file already exists.
+ */
 const downloadVideo = (url, destination) =>
     new Promise((resolve, reject) => {
         remote(url, (err, remoteSize) => {
@@ -47,6 +55,9 @@ const downloadVideo = (url, destination) =>
         });
     });
 
+/*
+ * Returns a promise containing the text content and debate turn of each speech in {speeches}
+ */
 const downloadTranscripts = speeches =>
     Promise.all(speeches.map(speech =>
         new Promise(resolve => {
@@ -61,7 +72,9 @@ const downloadTranscripts = speeches =>
         })
     ));
 
-
+/*
+ * Main download function
+ */
 const downloadCatalogue = (catalogue, rootDir, discardRaws) => {
     const videoIds = Object.keys(catalogue);
     const rawDir = rootDir + 'raw/';

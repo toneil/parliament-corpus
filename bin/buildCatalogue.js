@@ -59,7 +59,7 @@ const optionDefinitions = [
 const sections = [
     {
         header: 'Parliament corpus catalogue builder',
-        content: 'Builds corpus metadata files. See '
+        content: 'Builds corpus metadata files. See the README for more info.'
     },
     {
         header: 'Options',

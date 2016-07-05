@@ -39,7 +39,7 @@ const optionDefinitions = [
 const sections = [
     {
         header: 'Parliament corpus catalogue downloader',
-        content: 'Downloads text, video and sound data for all speech items in the input catalogue'
+        content: 'Downloads text, video and sound data for all speech items in the input catalogue. See the README for more info.'
     },
     {
         header: 'Options',
