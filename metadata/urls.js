@@ -3,6 +3,8 @@ const config = require('../config');
 const optional = x => !!x ? x : '';
 
 module.exports = {
+    person: personId =>
+        `http://data.riksdagen.se/personlista/?iid=${personId}&fnamn=&enamn=&f_ar=&kn=&parti=&valkrets=&rdlstatus=&org=&utformat=json&termlista=`,
     debateMetadata: debateId =>
         `http://www.riksdagen.se/api/videostream/get/${debateId}`,
     documentList: documentId =>

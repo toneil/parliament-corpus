@@ -64,6 +64,20 @@ const getSpeechList = queryParameters => {
 
 };
 
+const getPersonData = personId =>
+    new Promise(resolve => {
+        requestWrapper.getFromCache('person', personId, urls.person, responseObject => {
+            if (!responseObject || !responseObject['personlista']['person']) return resolve(null);
+            const person = responseObject['personlista']['person'];
+            const gender = person['kon'] === 'kvinna' ? 'f' : 'm';
+            resolve({
+                gender: gender,
+                constituency: person['valkrets'],
+                born: person['fodd_ar']
+            });
+        });
+    });
+
 /*
  * Returns a promise containing the start time and duration of {debateTurn} in the video for {debateId}
  */
@@ -126,5 +140,6 @@ module.exports = {
     getSpeechList: getSpeechList,
     getDebateVideoData: getDebateVideoData,
     getDebateTimestamps: getDebateTimestamps,
-    getVideoUrl: getVideoUrl
+    getVideoUrl: getVideoUrl,
+    getPersonData: getPersonData
 };

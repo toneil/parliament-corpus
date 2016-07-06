@@ -8,7 +8,8 @@
   },
   "bin": {
     "corpus-build-cat": "bin/buildCatalogue.js",
-    "corpus-download": "bin/downloadCatalogue.js"
+    "corpus-download": "bin/downloadCatalogue.js",
+    "corpus-lookup": "bin/lookup.js"
   },
   "engines": {
     "node": "6.2.1"
@@ -21,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.4.1",
+    "cli-table": "^0.3.1",
     "clui": "^0.3.1",
     "command-line-args": "^3.0.0",
     "command-line-usage": "^3.0.2",

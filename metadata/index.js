@@ -44,7 +44,8 @@ const getSpeechMetadata = queryParameters =>
             return speech;
         })
 
-    }).filter(filters.removeNull);
+    }).filter(filters.removeNull
+    ).tap(speeches => console.log('Found', speeches.length, 'speech items'));
 
 module.exports = {
     getSpeechMetadata: getSpeechMetadata
