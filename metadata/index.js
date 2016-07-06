@@ -7,8 +7,8 @@ const filters = require('./filters');
  *
  * Given a debate ID, returns a promise containing a URL to its recording.
  */
-const getVideoUrl = debateId =>
-    requests.getDebateVideoData(debateId
+const getVideoUrl = speech =>
+    requests.getDebateVideoData(speech.debateId
     ).then(transforms.getIntermediateVideoUrl
     ).then(requests.getVideoUrl
     ).then(videoUrl => {
@@ -31,7 +31,10 @@ const getVideoUrl = debateId =>
 const getSpeechMetadata = queryParameters =>
     requests.getSpeechList(queryParameters
     ).filter(filters.notAfter(queryParameters.to)
-    ).map(speech => getVideoUrl(speech.debateId)
+    ).filter(speech =>
+        requests.getPersonData(speech.personId)
+            .then(filters.personFilter(queryParameters.person))
+    ).map(getVideoUrl
     ).map(speech => {
         speech.videoId = transforms.getVideoIdFromUrl(speech.videoUrl);
         return speech;

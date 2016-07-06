@@ -13,9 +13,9 @@ const stripIntro = string => string.replace(/([^\s+[A-Z][a-z]+])/,'');
  * {rootDir}/{debateId}/[transcript.debateTurn].txt, after
  * stripping the content for metadata tags.
  */
-const splitTranscripts = (videoID, transcripts, rootDir) => {
+const splitTranscripts = (debateId, transcripts, rootDir) => {
     new Promise(resolve => {
-         const videoDir = rootDir + videoID +'/';
+         const videoDir = rootDir + debateId +'/';
          mkdirp(videoDir, () => {
              Promise.map(transcripts, transcript => {
                  if (!transcript)
@@ -41,20 +41,28 @@ const discardRaws = (filePath, discardRaws) => {
  * in segments as specified in [speech.start] and [speech.duration] fields for each [speech] in
  * {speeches}. The resulting sound data will be stored in {rootDir}/{debateId}/[speech.debateTurn].mp3
  */
-const extractAndSplitAudio = (videoPath, videoId, speeches, rootDir) => {
-    const audioRoot = rootDir + videoId + '/';
+const extractAndSplitAudio = (videoPath, debateId, speeches, rootDir) => {
+    const audioRoot = rootDir + debateId + '/';
     console.log("Extracting mp3 from", videoPath);
-    return Promise.map(speeches, speech =>
+    return Promise.reduce(speeches, (acc, speech) =>
         new Promise(resolve => {
-            ffmpeg(videoPath)
-                .noVideo()
-                .setStartTime(speech.start)
-                .setDuration(speech.duration)
-                .on('end', resolve)
-                .output(audioRoot + speech.debateTurn + '.mp3')
-                .run();
+            const outPath = audioRoot + speech.debateTurn + '.mp3';
+            fs.access(outPath, fs.F_OK, fileDoesntExist => {
+                if (fileDoesntExist) {
+                    ffmpeg(videoPath)
+                        .noVideo()
+                        .setStartTime(speech.start)
+                        .setDuration(speech.duration)
+                        .on('end', resolve)
+                        .output(outPath)
+                        .run();
+                } else {
+                    console.log(outPath, 'already exists');
+                    resolve();
+                }
+            });
         })
-    ).all();
+    ,[]);
 };
 module.exports = {
     extractAndSplitAudio: extractAndSplitAudio,

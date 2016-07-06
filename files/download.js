@@ -76,21 +76,21 @@ const downloadTranscripts = speeches =>
  * Main download function
  */
 const downloadCatalogue = (catalogue, rootDir, discardRaws) => {
-    const videoIds = Object.keys(catalogue);
+    const debateIds = Object.keys(catalogue);
     const rawDir = rootDir + 'raw/';
     mkdirp.sync(rawDir);
 
-    console.log("Downloading", videoIds.length, "videos");
-    Promise.reduce(videoIds, (acc, videoId, index, len) => {
-        const videoUrl = catalogue[videoId].downloadUrl;
-        const filePath = rawDir + videoId + '.mp4';
-        console.log("Downloading video", index, 'of', len, ' ==> Video ID', videoId);
+    console.log("Downloading", debateIds.length, "videos");
+    Promise.reduce(debateIds, (acc, debateId, index, len) => {
+        const videoUrl = catalogue[debateId].downloadUrl;
+        const filePath = rawDir + debateId + '.mp4';
+        console.log("Downloading video", index, 'of', len, ' ==> Debate ID', debateId);
         return downloadVideo(videoUrl, filePath
-            ).then(() => downloadTranscripts(catalogue[videoId].speeches)
+            ).then(() => downloadTranscripts(catalogue[debateId].speeches)
             ).then(transcripts =>
-                manipulation.splitTranscripts(videoId, transcripts, rootDir)
+                manipulation.splitTranscripts(debateId, transcripts, rootDir)
             ).then(() =>
-                manipulation.extractAndSplitAudio(filePath, videoId, catalogue[videoId].speeches, rootDir)
+                manipulation.extractAndSplitAudio(filePath, debateId, catalogue[debateId].speeches, rootDir)
             ).then(() =>
                 manipulation.discardRaws(filePath, discardRaws)
             );

@@ -7,8 +7,8 @@ var jsonfile = require('jsonfile');
  */
 const createCatalogue = (speeches, cataloguePath, append) => {
     const catalogue = speeches.reduce((cat, speech) => {
-        if (!cat.hasOwnProperty(speech.videoId))
-            cat[speech.videoId] = {
+        if (!cat.hasOwnProperty(speech.debateId))
+            cat[speech.debateId] = {
                 speeches: [],
                 downloadUrl: speech.videoUrl
             };
@@ -19,21 +19,21 @@ const createCatalogue = (speeches, cataloguePath, append) => {
             speechDataUrl: speech.speechDataUrl,
             debateTurn: speech.debateTurn
         };
-        cat[speech.videoId].speeches.push(segmentMetadata);
+        cat[speech.debateId].speeches.push(segmentMetadata);
         return cat;
     }, {});
     if (append) {
         const existingCat = jsonfile.readFileSync(cataloguePath);
-        Object.keys(existingCat).forEach(videoId => {
-           if (!catalogue.hasOwnProperty(videoId)) {
-               catalogue[videoId] = existingCat[videoId];
+        Object.keys(existingCat).forEach(debateId => {
+           if (!catalogue.hasOwnProperty(debateId)) {
+               catalogue[debateId] = existingCat[debateId];
            } else {
-               existingCat[videoId].speeches.forEach(existingSpeech => {
-                    const inCat = catalogue[videoId].speeches.some(speech =>
+               existingCat[debateId].speeches.forEach(existingSpeech => {
+                    const inCat = catalogue[debateId].speeches.some(speech =>
                         speech.debateTurn === existingSpeech.debateTurn
                     );
                     if (!inCat)
-                        catalogue[videoId].speeches.push(existingSpeech);
+                        catalogue[debateId].speeches.push(existingSpeech);
                });
            }
         });
