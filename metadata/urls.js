@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../config').config;
 
 const optional = x => !!x ? x : '';
 

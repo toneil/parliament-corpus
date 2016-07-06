@@ -5,7 +5,7 @@ const commandLineArgs = require('command-line-args');
 
 const catalogue = require('../files/catalogue');
 const download = require('../files/download');
-const config = require('../config');
+const config = require('../config').config;
 
 const optionDefinitions = [
     {

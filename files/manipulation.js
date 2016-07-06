@@ -1,5 +1,5 @@
 const mkdirp = require('mkdirp');
-const config = require('../config');
+const config = require('../config').config;
 const fs = require('fs');
 const Promise = require('bluebird');
 const ffmpeg = require('fluent-ffmpeg');

@@ -30,7 +30,7 @@ const optionDefinitions = [
     {
         name: 'from', alias: 'f',
         type: String,
-        defaultValue: new Date(config.defaultStartDate),
+        defaultValue: new Date(config.config.defaultStartDate),
         typeLabel: '[underline]{yyyy-mm-dd}',
         description: 'Only include speeches after this date'
     },
@@ -61,14 +61,30 @@ const optionDefinitions = [
         name: 'individual', alias:'i',
         type: String,
         defaultValue: '',
-        description: 'Only include speeches from a single parliamentarian'
+        description: 'Given a person ID, only include speeches from that parliamentarian. Use corpus-lookup to find IDs'
     },
     {
         name: 'party', alias:'p',
         type: String,
         defaultValue: '',
         typeLabel:'[underline]{s,mp,l,v, etc.}',
-        description: 'Only include speeches held by parliamentarians from a single political party.'
+        description: 'Only include speeches held by parliamentarians from a single political party'
+    },
+    {
+        name: 'timeout',
+        type: Number,
+        description: `Sets the number of ms to wait after request failures before trying again, default ${config.config.tooManyRequestsTimeout}`
+    },
+    {
+        name: 'no-cache',
+        type: Boolean,
+        description: 'If set, will not cache requests to the Parliament API (not recommended)'
+    },
+    {
+        name: 'request-size',
+        type: Number,
+        description: `Sets the maximum expected list size for speech list requests.
+        Higher values can cause the tool to malfunction. Lower values will clip speech items held early in the year. Default ${config.config.maxSpeechListSize}`
     },
     {
         name: 'help', alias:'h',
@@ -97,6 +113,14 @@ if (!options['cat-path'] || !!options.help) {
     console.log(getUsage(sections));
     process.exit(1);
 }
+
+if (!!options['timeout'])
+    config.setField('tooManyRequestsTimeout', options['timeout']);
+
+if(!!options['no-cache'])
+    config.setField('cacheRequests', false);
+if(!!options['request-size'])
+    config.setField('maxSpeechListSize', options['request-size']);
 
 const queryParameters = {
     person: {

@@ -6,7 +6,7 @@ const remote = require('remote-file-size');
 const Progress = require('clui').Progress;
 
 const requestWrapper = require('../util/requestWrapper');
-const config = require('../config');
+const config = require('../config').config;
 const manipulation = require('./manipulation');
 
 

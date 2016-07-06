@@ -1,6 +1,6 @@
 const Promise = require('bluebird');
 const urls = require('./urls');
-const config = require('../config');
+const config = require('../config').config;
 const requestWrapper = require('../util/requestWrapper');
 
 const getStartTime = (videoUrl) => videoUrl.split('=')[1];

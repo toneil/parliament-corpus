@@ -1,12 +1,17 @@
 
 const config = {
+    // The values below can be overridden from the cli
+
     tooManyRequestsTimeout: 30000,
     cacheRequests: true,
     maxSpeechListSize: 1000,
-
-    // The values below can be overridden from the cli
     defaultStartDate: '2000-01-01',
     defaultFileRoot: 'data/'
 };
 
-module.exports = config;
+const setField = (field, value) => config[field] = value;
+
+module.exports = {
+    config: config,
+    setField: setField
+};

@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../config').config;
 const urls = require('../metadata/urls');
 const request = require('request');
 const Promise = require('bluebird');
