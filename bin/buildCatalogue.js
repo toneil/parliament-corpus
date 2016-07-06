@@ -25,27 +25,50 @@ const optionDefinitions = [
         type: String,
         defaultValue: Date.now(),
         typeLabel: '[underline]{yyyy-mm-dd}',
-        description: 'Upper time constraint of speeches considered.'
+        description: 'Only include speeches before this date'
     },
     {
         name: 'from', alias: 'f',
         type: String,
         defaultValue: new Date(config.defaultStartDate),
         typeLabel: '[underline]{yyyy-mm-dd}',
-        description: 'Lower time constraint of speeches considered.'
+        description: 'Only include speeches after this date'
+    },
+    {
+        name: 'born-after',
+        type: String,
+        typeLabel: '[underline]{yyyy}',
+        description: 'Only include speeches held by parliamentarians born after this year'
+    },
+    {
+        name: 'born-before',
+        type: String,
+        typeLabel: '[underline]{yyyy}',
+        description: 'Only include speeches held by parliamentarians born before this year'
+    },
+    {
+        name: 'gender',
+        type: String,
+        typeLabel: '[underline]{m/f}',
+        description: 'Only include speeches held by parliamentarians of one gender'
+    },
+    {
+        name: 'constituency',
+        type: String,
+        description: 'Only include speeches held by parliamentarians of this constituency'
     },
     {
         name: 'individual', alias:'i',
         type: String,
         defaultValue: '',
-        description: 'Only consider speeches from a single parliamentarian'
+        description: 'Only include speeches from a single parliamentarian'
     },
     {
         name: 'party', alias:'p',
         type: String,
         defaultValue: '',
         typeLabel:'[underline]{s,mp,l,v, etc.}',
-        description: 'Only consider parliamentarians from a single political party.'
+        description: 'Only include speeches held by parliamentarians from a single political party.'
     },
     {
         name: 'help', alias:'h',
@@ -76,6 +99,12 @@ if (!options['cat-path'] || !!options.help) {
 }
 
 const queryParameters = {
+    person: {
+        bornAfter: options['born-after'],
+        bornBefore: options['born-before'],
+        gender: options['gender'],
+        constituency: options['constituency']
+    },
     to: new Date(options.to).toISOString(),
     from: new Date(options.from).toISOString(),
     party: options.party,
