@@ -65,7 +65,7 @@ The audio files are segmented so as to align with the transcripts.
 + `--discard, -d` If set, all raw video files will be deleted once the audio has been extracted from them.
 
 ### Example usage
-
+Running the following commands will download all speeches made by Isabella Lövin as well as all speeches held between January and July 2016. The raw video data will be discarded after the audio tracks have been extracted.
 ```
 corpus-lookup -f Isabella -l Lövin
 ┌──────────────────────────────────────────────────┬────────────────────┬────────────────────┬──────────┬──────────┬──────────────────────────────────────────────────┐
