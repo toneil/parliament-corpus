@@ -34,9 +34,9 @@ $ corpus-download --cat-path path/to/catalogue -r path/to/download/data/root [op
 ### corpus-lookup 
 In order to download speeches from individual parliamentarians you first need to look up their personal ID. `corpus-lookup` allows you to search for first and last names and prints out a table with IDs, parties etc. for all matches
 
-+`--help, -h` Prints help text.
-+`--first-name, -f` Filters on first name.
-+`--last-name, -l` Filters on last name.
++ `--help, -h` Prints help text.
++ `--first-name, -f` Filters on first name.
++ `--last-name, -l` Filters on last name.
 
 ### corpus-build-cat
 The Parliament servers are somewhat fragile, and the ammount of requests needed to get the metadata necessary for downloading the video files and transcripts can cause the servers to reject the user. It is therefore a good idea to construct a metadata catalogue before running the time consuming task of downloading the videos themselves, as this can be done in smaller increments, e.g. by restricting each metadata build task to a certain political party. 
